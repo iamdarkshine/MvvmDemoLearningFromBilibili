@@ -23,4 +23,10 @@ class DataListenContainer<T> {
                 }
             }
         }
+
+    fun addListener(block: (T?) -> Unit) {
+        if(!blocks.contains (block)) {
+            blocks.add(block)
+        }
+    }
 }
