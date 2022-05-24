@@ -2,8 +2,17 @@ package com.example.mvvmdemolearningfrombilibili.domain.musicList
 
 import com.example.mvvmdemolearningfrombilibili.DataListenContainer
 import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycle
+import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycleOwner
 
-class MusicPresenter : ILifecycle {
+class MusicPresenter(owner: ILifecycleOwner) {
+
+    private val viewLifeImpl by lazy {
+        ViewLifeImpl()
+    }
+
+    init {
+        owner.getLifecycleProvider().addLifeListener(viewLifeImpl)
+    }
     enum class MusicLoadState {
         LOADING, EMPTY, SUCCESS, ERROR
     }
@@ -35,27 +44,30 @@ class MusicPresenter : ILifecycle {
         })
     }
 
-    override fun onCreate() {
+    inner class ViewLifeImpl : ILifecycle {
+        override fun onCreate() {
 
-    }
+        }
 
-    override fun onStart() {
-        TODO("Not yet implemented")
-    }
+        override fun onStart() {
 
-    override fun onResume() {
-        TODO("Not yet implemented")
-    }
+        }
 
-    override fun onPause() {
-        TODO("Not yet implemented")
-    }
+        override fun onResume() {
 
-    override fun onStop() {
-        TODO("Not yet implemented")
-    }
+        }
 
-    override fun onDestroy() {
-        TODO("Not yet implemented")
+        override fun onPause() {
+
+        }
+
+        override fun onStop() {
+
+        }
+
+        override fun onDestroy() {
+
+        }
+
     }
 }
