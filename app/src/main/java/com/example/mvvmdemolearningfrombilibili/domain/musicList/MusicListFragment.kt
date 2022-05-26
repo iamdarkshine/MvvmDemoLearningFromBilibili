@@ -5,10 +5,7 @@ import com.example.mvvmdemolearningfrombilibili.base.BaseFragment
 class MusicListFragment : BaseFragment() {
 
     private val musicPresenter by lazy {
-        MusicPresenter()
+        MusicPresenter(owner = this)
     }
 
-    init {
-        lifeProvider.addLifeListener(musicPresenter)
-    }
 }

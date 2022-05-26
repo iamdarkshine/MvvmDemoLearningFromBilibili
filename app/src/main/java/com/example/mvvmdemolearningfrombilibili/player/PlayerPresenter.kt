@@ -2,18 +2,25 @@ package com.example.mvvmdemolearningfrombilibili.player
 
 import com.example.mvvmdemolearningfrombilibili.DataListenContainer
 import com.example.mvvmdemolearningfrombilibili.domain.musicList.Music
-import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycle
+import com.example.mvvmdemolearningfrombilibili.lifecycle.*
 
-class PlayerPresenter{
+class PlayerPresenter(owner: ILifecycleOwner) : AbsLifecycle(){
+
 
     var currentMusic = DataListenContainer<Music>()
 
     var currentPlayState = DataListenContainer<PlayState>()
 
-    companion object {
+    companion object : ILifecycleOwner {
         val instance by lazy {
-            PlayerPresenter()
+            PlayerPresenter(owner = this)
         }
+
+        override fun getLifecycleProvider(): LifecycleProvider {
+            return LifecycleProvider()
+        }
+
+
     }
 
     enum class PlayState {
@@ -21,6 +28,10 @@ class PlayerPresenter{
     }
 
     fun doPlayOrPause() {
-        
+
+    }
+
+    override fun onViewLifeStateChange(state: LifeState) {
+
     }
 }

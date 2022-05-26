@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_music.*
 class MusicActivity : BaseActivity() {
 
     private val musicPresenter by lazy {
-        MusicPresenter()
+        MusicPresenter(owner = this)
     }
 
     init {
@@ -26,11 +26,11 @@ class MusicActivity : BaseActivity() {
 
 
     private fun initDataListener() {
-        musicPresenter.musicList.addListener {
-
+        musicPresenter.musicList.addListener(this) {
+            println("加载状态 --- > ${it?.size}条数据")
         }
-        musicPresenter.loadState.addListener {
-
+        musicPresenter.loadState.addListener(this) {
+            println("加载状态 --- > $it")
         }
     }
 

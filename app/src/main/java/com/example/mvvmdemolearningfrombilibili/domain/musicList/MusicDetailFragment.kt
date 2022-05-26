@@ -9,12 +9,9 @@ import com.example.mvvmdemolearningfrombilibili.lifecycle.LifecycleProvider
 class MusicDetailFragment: BaseFragment() {
 
     private val musicPresenter by lazy {
-        MusicPresenter()
+        MusicPresenter(owner = this)
     }
 
-    init {
-        lifeProvider.addLifeListener(musicPresenter)
-    }
 
 
 

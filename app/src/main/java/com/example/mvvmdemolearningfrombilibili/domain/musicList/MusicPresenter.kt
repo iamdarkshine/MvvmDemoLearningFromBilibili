@@ -1,10 +1,12 @@
 package com.example.mvvmdemolearningfrombilibili.domain.musicList
 
 import com.example.mvvmdemolearningfrombilibili.DataListenContainer
+import com.example.mvvmdemolearningfrombilibili.lifecycle.AbsLifecycle
 import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycle
 import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycleOwner
+import com.example.mvvmdemolearningfrombilibili.lifecycle.LifeState
 
-class MusicPresenter(owner: ILifecycleOwner) {
+class MusicPresenter(owner: ILifecycleOwner) : AbsLifecycle() {
 
     private val viewLifeImpl by lazy {
         ViewLifeImpl()
@@ -44,30 +46,15 @@ class MusicPresenter(owner: ILifecycleOwner) {
         })
     }
 
-    inner class ViewLifeImpl : ILifecycle {
-        override fun onCreate() {
+    inner class ViewLifeImpl : AbsLifecycle() {
+
+        override fun onViewLifeStateChange(state: LifeState) {
 
         }
 
-        override fun onStart() {
+    }
 
-        }
-
-        override fun onResume() {
-
-        }
-
-        override fun onPause() {
-
-        }
-
-        override fun onStop() {
-
-        }
-
-        override fun onDestroy() {
-
-        }
-
+    override fun onViewLifeStateChange(state: LifeState) {
+        viewLifeImpl.onViewLifeStateChange(state)
     }
 }

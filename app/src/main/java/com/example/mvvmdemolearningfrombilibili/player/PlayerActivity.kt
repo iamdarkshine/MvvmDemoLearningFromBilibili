@@ -12,13 +12,13 @@ class PlayerActivity : BaseActivity() {
         MusicPresenter(this)
     }
 
-    private val playerPresenter by lazy {
-        PlayerPresenter()
-    }
-
-    init {
-        lifeProvider.addLifeListener(playerPresenter)
-    }
+//    private val playerPresenter by lazy {
+//        PlayerPresenter()
+//    }
+//
+//    init {
+//        lifeProvider.addLifeListener(playerPresenter)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

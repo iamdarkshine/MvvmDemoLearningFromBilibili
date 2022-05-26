@@ -2,10 +2,11 @@ package com.example.mvvmdemolearningfrombilibili.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycleOwner
 import com.example.mvvmdemolearningfrombilibili.lifecycle.LifeState
 import com.example.mvvmdemolearningfrombilibili.lifecycle.LifecycleProvider
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : Fragment(), ILifecycleOwner {
     val lifeProvider by lazy {
         LifecycleProvider()
     }
@@ -38,5 +39,9 @@ open class BaseFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         lifeProvider.makeLifeState(LifeState.DESTROY)
+    }
+
+    override fun getLifecycleProvider(): LifecycleProvider {
+        return lifeProvider
     }
 }

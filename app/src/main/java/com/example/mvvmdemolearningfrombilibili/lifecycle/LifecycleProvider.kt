@@ -6,21 +6,24 @@ package com.example.mvvmdemolearningfrombilibili.lifecycle
  */
 class LifecycleProvider {
 
-    private var currentLifeState: LifeState? = null
-    private val lifecycleListener = arrayListOf<ILifecycle>()
+    private var currentLifeState: LifeState = LifeState.DESTROY
+    private val lifecycleListener = arrayListOf<AbsLifecycle>()
 
-    fun addLifeListener(listener: ILifecycle) {
+    fun addLifeListener(listener: AbsLifecycle) {
         if (!lifecycleListener.contains(listener)) {
             lifecycleListener.add(listener)
         }
     }
 
-    fun removeLifeListener(listener: ILifecycle) {
+    fun removeLifeListener(listener: AbsLifecycle) {
         lifecycleListener.remove(listener)
     }
 
     fun makeLifeState(state: LifeState) {
         currentLifeState = state
+        lifecycleListener.forEach {
+            it.onViewLifeStateChange(state)
+        }
         when (state) {
             LifeState.CREATE -> {
                 dispatchCreateState()
@@ -78,5 +81,12 @@ class LifecycleProvider {
         lifecycleListener.forEach {
             it.onCreate()
         }
+    }
+
+    fun isAtLeast(state: LifeState): Boolean {
+        println("current state $currentLifeState ===== $state")
+        val isAtLeastState = currentLifeState > state
+        println("isAtLeastState == > $isAtLeastState")
+        return isAtLeastState
     }
 }
