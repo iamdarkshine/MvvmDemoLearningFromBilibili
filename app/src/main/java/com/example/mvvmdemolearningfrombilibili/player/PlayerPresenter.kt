@@ -6,10 +6,15 @@ import com.example.mvvmdemolearningfrombilibili.lifecycle.*
 
 class PlayerPresenter(owner: ILifecycleOwner) : AbsLifecycle(){
 
+    private val playerModel by lazy {
+        PlayerModel()
+    }
 
     var currentMusic = DataListenContainer<Music>()
 
     var currentPlayState = DataListenContainer<PlayState>()
+
+    var livePlayerState = LivePlayerState.instance
 
     companion object : ILifecycleOwner {
         val instance by lazy {
@@ -28,7 +33,16 @@ class PlayerPresenter(owner: ILifecycleOwner) : AbsLifecycle(){
     }
 
     fun doPlayOrPause() {
+        if (currentMusic.value == null) {
+            // 获取一首歌曲
 
+        }
+
+        if (currentPlayState.value != PlayState.PLAYING) {
+            livePlayerState.postValue(PlayState.PLAYING)
+        } else {
+            livePlayerState.postValue(PlayState.PAUSE)
+        }
     }
 
     override fun onViewLifeStateChange(state: LifeState) {

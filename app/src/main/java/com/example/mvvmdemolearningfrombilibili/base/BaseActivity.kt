@@ -3,6 +3,8 @@ package com.example.mvvmdemolearningfrombilibili.base
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.example.mvvmdemolearningfrombilibili.domain.musicList.Music
 import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycle
 import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycleOwner
 import com.example.mvvmdemolearningfrombilibili.lifecycle.LifeState
@@ -13,6 +15,9 @@ open class BaseActivity : AppCompatActivity(), ILifecycleOwner {
     val lifeProvider by lazy {
         LifecycleProvider()
     }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         lifeProvider.makeLifeState(LifeState.CREATE)

@@ -1,19 +1,20 @@
 package com.example.mvvmdemolearningfrombilibili.domain.musicList
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import com.example.mvvmdemolearningfrombilibili.DataListenContainer
 import com.example.mvvmdemolearningfrombilibili.lifecycle.AbsLifecycle
-import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycle
-import com.example.mvvmdemolearningfrombilibili.lifecycle.ILifecycleOwner
 import com.example.mvvmdemolearningfrombilibili.lifecycle.LifeState
 
-class MusicPresenter(owner: ILifecycleOwner) : AbsLifecycle() {
-
+class MusicPresenter(owner: LifecycleOwner) {
     private val viewLifeImpl by lazy {
         ViewLifeImpl()
     }
 
     init {
-        owner.getLifecycleProvider().addLifeListener(viewLifeImpl)
+        owner.lifecycle.addObserver(viewLifeImpl)
     }
     enum class MusicLoadState {
         LOADING, EMPTY, SUCCESS, ERROR
@@ -22,6 +23,9 @@ class MusicPresenter(owner: ILifecycleOwner) : AbsLifecycle() {
     private val musicModel by lazy {
         MusicModel()
     }
+
+    val liveMusicList = MutableLiveData<List<Music>>()
+
     val musicList = DataListenContainer<List<Music>>()
     val loadState = DataListenContainer<MusicLoadState>()
     private val page = 1
@@ -32,12 +36,13 @@ class MusicPresenter(owner: ILifecycleOwner) : AbsLifecycle() {
         // 从model层中获取音乐，列表
         musicModel.loadMusicByPage(page, size, object : MusicModel.OnMusicLoadResult {
             override fun onSuccess(result: List<Music>) {
-                musicList.value = result
-                loadState.value = if (result.isEmpty()) {
-                    MusicLoadState.EMPTY
-                } else {
-                    MusicLoadState.SUCCESS
-                }
+                liveMusicList.postValue(result)
+//                musicList.value = result
+//                loadState.value = if (result.isEmpty()) {
+//                    MusicLoadState.EMPTY
+//                } else {
+//                    MusicLoadState.SUCCESS
+//                }
             }
 
             override fun onError(msg: String, code: Int) {
@@ -46,15 +51,25 @@ class MusicPresenter(owner: ILifecycleOwner) : AbsLifecycle() {
         })
     }
 
-    inner class ViewLifeImpl : AbsLifecycle() {
+    inner class ViewLifeImpl : LifecycleEventObserver {
+        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+            when (event) {
+                Lifecycle.Event.ON_START -> {
+                    // 监听GPS信号变化
+                    println("监听GPS信号变化")
+                }
+                Lifecycle.Event.ON_PAUSE -> {
+                    // 停止GPS信号变化监听
+                    println("停止GPS信号变化监听")
+                }
+                else -> {
 
-        override fun onViewLifeStateChange(state: LifeState) {
-
+                }
+            }
         }
 
+
     }
 
-    override fun onViewLifeStateChange(state: LifeState) {
-        viewLifeImpl.onViewLifeStateChange(state)
-    }
+
 }
